@@ -15,6 +15,8 @@ namespace MITTCourseAppWTests.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        ApplicationDbContext db = new ApplicationDbContext();
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -139,6 +141,8 @@ namespace MITTCourseAppWTests.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            var selectList = db.Users.Select(x => x.personType).ToList();
+            ViewBag.personType = new SelectList(selectList);
             return View();
         }
 
@@ -151,7 +155,8 @@ namespace MITTCourseAppWTests.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, personType = model.personType};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
