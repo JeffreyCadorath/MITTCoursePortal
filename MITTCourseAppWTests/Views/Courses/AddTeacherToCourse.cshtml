@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "AddTeacherToCourse";
+}
+
+<h2>Add Teacher To Course</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.DropDownList("courses", "Choose Juan")
+    @Html.DropDownList("teachers", "Choose Juan")
+    <input type="submit" value="Add" />
+}
+

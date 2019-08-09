@@ -84,6 +84,11 @@ namespace MITTCourseAppWTests.Models
                 }
             }
         }
+        public ICollection<ApplicationUser> GetAllStudents()
+        {
+            var students = db.Users.Where(x => x.personType == PersonType.Student).ToList();
+            return students;
+        }
 
     }
 }

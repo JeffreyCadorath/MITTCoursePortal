@@ -16,9 +16,12 @@ namespace MITTCourseAppWTests.Tests
             var courses = ch.allCourses();
             Assert.IsNotNull(courses);
         }
-        public void AddStudentToTest()
+        [TestMethod]
+        public void GetAllStudents()
         {
-
+            CourseHelper ch = new CourseHelper(new ApplicationDbContext());
+            var students = ch.GetAllStudents();
+            Assert.IsNotNull(students);
         }
     }
 }

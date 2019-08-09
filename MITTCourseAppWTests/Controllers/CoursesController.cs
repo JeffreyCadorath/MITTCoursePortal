@@ -6,12 +6,25 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using MITTCourseAppWTests.Models;
 
 namespace MITTCourseAppWTests.Controllers
 {
     public class CoursesController : Controller
     {
+        private RoleManager<IdentityRole> rolesManger;
+        private UserManager<IdentityUser> userManager;
+        CourseHelper ch;
+
+        public CoursesController()
+        {
+            rolesManger = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>());
+            userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>());
+            ch = new CourseHelper(db);
+        }
+
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Courses
@@ -122,6 +135,23 @@ namespace MITTCourseAppWTests.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        public ActionResult AddTeacherToCourse()
+        {
+            var teachers = db.Users.Where(x => x.personType == PersonType.Teacher).Distinct().ToList();
+            var courses = db.Courses.ToList();
+            ViewBag.teachers = new SelectList(teachers, "Id", "UserName");
+            ViewBag.courses = new SelectList(courses, "Id", "Title");
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddTeacherToCourse(string teachers, int courses)
+        {
+            ch.AddInsturctorToCourse(teachers, courses);
+            db.SaveChanges();
+            return View("Index");
+
         }
     }
 }
