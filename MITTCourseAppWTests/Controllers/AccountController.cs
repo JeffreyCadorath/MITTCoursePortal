@@ -141,8 +141,7 @@ namespace MITTCourseAppWTests.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            var selectList = db.Users.Select(x => x.personType).ToList();
-            ViewBag.personType = new SelectList(selectList);
+            ViewBag.personType = new SelectList(Enum.GetValues(typeof(PersonType)));
             return View();
         }
 
